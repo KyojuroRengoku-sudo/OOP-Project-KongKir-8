@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Meatline Inventory</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">M</div>
+
+            <div>
+                <h2>Meatline</h2>
+                <p>Inventory System</p>
+            </div>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html" class="nav-link active">
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+            <a href="stock-in.html" class="nav-link">
+                <span class="nav-icon">＋</span>
+                Stock In
+            </a>
+
+            <a href="distribution.html" class="nav-link">
+                <span class="nav-icon">⇄</span>
+                Distribution
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>Current Day</p>
+            <strong id="sidebarDay">Day 1</strong>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">OVERVIEW</p>
+                <h1>Dashboard</h1>
+                <p class="subtitle">
+                    Monitor today's chicken inventory and stock movement.
+                </p>
+            </div>
+
+            <div class="date-box">
+                <span>Today</span>
+                <strong id="todayDate"></strong>
+            </div>
+
+        </header>
+
+
+        <!-- SUMMARY CARDS -->
+        <section class="cards">
+
+            <div class="card">
+                <div class="card-top">
+                    <span>Yesterday's Stock</span>
+                    <div class="icon-box">↺</div>
+                </div>
+
+                <h2 id="openingTotal">0 kg</h2>
+                <p>Carried forward</p>
+            </div>
+
+
+            <div class="card">
+                <div class="card-top">
+                    <span>Stock In</span>
+                    <div class="icon-box green">↓</div>
+                </div>
+
+                <h2 id="stockInTotal">0 kg</h2>
+                <p>Received today</p>
+            </div>
+
+
+            <div class="card">
+                <div class="card-top">
+                    <span>Distributed</span>
+                    <div class="icon-box orange">→</div>
+                </div>
+
+                <h2 id="distributedTotal">0 kg</h2>
+                <p>Released today</p>
+            </div>
+
+
+            <div class="card highlight">
+                <div class="card-top">
+                    <span>Remaining Stock</span>
+                    <div class="icon-box white">✓</div>
+                </div>
+
+                <h2 id="remainingTotal">0 kg</h2>
+                <p>Currently available</p>
+            </div>
+
+        </section>
+
+
+        <!-- INVENTORY -->
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <p class="eyebrow">LIVE INVENTORY</p>
+                    <h2>Stock Overview</h2>
+                </div>
+
+                <button class="secondary-btn" id="closeDayBtn">
+                    Close Day & Roll Forward
+                </button>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Yesterday</th>
+                        <th>Stock In</th>
+                        <th>Distributed</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="inventoryBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+    loadDashboard();
+</script>
+
+</body>
+</html>
