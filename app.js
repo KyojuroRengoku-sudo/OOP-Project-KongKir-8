@@ -31,10 +31,6 @@ const DESTINATIONS = [
 const STORAGE_KEY = "meatline_inventory_v2";
 
 
-/* =========================================================
-   DEFAULT OPENING STOCK
-========================================================= */
-
 const DEFAULT_OPENING = {
     "Whole Chicken": 89.55,
     "BackBones": 107.25,
@@ -54,10 +50,6 @@ const DEFAULT_OPENING = {
     "Fats": 0
 };
 
-
-/* =========================================================
-   DEFAULT UNIT COST
-========================================================= */
 
 const DEFAULT_COST = {
     "Whole Chicken": 123.5,
@@ -79,9 +71,9 @@ const DEFAULT_COST = {
 };
 
 
-/* =========================================================
+/* ========================================
    STATE
-========================================================= */
+======================================== */
 
 function getDefaultState() {
 
@@ -100,7 +92,6 @@ function getDefaultState() {
 
         distributions: []
     };
-
 }
 
 
@@ -120,14 +111,6 @@ function loadState() {
         const savedState =
             JSON.parse(saved);
 
-
-        /*
-            Compatibility for older saved data.
-
-            If the browser already has inventory data
-            before unitCost was added, this makes sure
-            the new unitCost property is still available.
-        */
 
         savedState.opening = {
             ...DEFAULT_OPENING,
@@ -158,9 +141,7 @@ function loadState() {
     } catch (error) {
 
         return getDefaultState();
-
     }
-
 }
 
 
@@ -170,16 +151,15 @@ function saveState() {
         STORAGE_KEY,
         JSON.stringify(state)
     );
-
 }
 
 
 let state = loadState();
 
 
-/* =========================================================
-   CALCULATIONS
-========================================================= */
+/* ========================================
+   INVENTORY CALCULATIONS
+======================================== */
 
 function getStockIn(product) {
 
@@ -192,7 +172,6 @@ function getStockIn(product) {
                 total + Number(item.quantity),
             0
         );
-
 }
 
 
@@ -207,7 +186,6 @@ function getDistributed(product) {
                 total + Number(item.quantity),
             0
         );
-
 }
 
 
@@ -224,13 +202,8 @@ function getRemaining(product) {
         getStockIn(product) -
         getDistributed(product)
     );
-
 }
 
-
-/* =========================================================
-   UNIT COST AND STOCK VALUE
-========================================================= */
 
 function getUnitCost(product) {
 
@@ -239,7 +212,6 @@ function getUnitCost(product) {
         DEFAULT_COST[product] ??
         0
     );
-
 }
 
 
@@ -249,7 +221,51 @@ function getStockValue(product) {
         getRemaining(product) *
         getUnitCost(product)
     );
+}
 
+
+/* ========================================
+   TOTALS
+======================================== */
+
+function sumOpening() {
+
+    return PRODUCTS.reduce(
+        (total, product) =>
+            total +
+            Number(state.opening[product] || 0),
+        0
+    );
+}
+
+
+function sumStockIn() {
+
+    return state.stockIn.reduce(
+        (total, item) =>
+            total + Number(item.quantity),
+        0
+    );
+}
+
+
+function sumDistributed() {
+
+    return state.distributions.reduce(
+        (total, item) =>
+            total + Number(item.quantity),
+        0
+    );
+}
+
+
+function sumRemaining() {
+
+    return PRODUCTS.reduce(
+        (total, product) =>
+            total + getRemaining(product),
+        0
+    );
 }
 
 
@@ -260,99 +276,40 @@ function sumStockValue() {
             total + getStockValue(product),
         0
     );
-
 }
 
 
-/* =========================================================
-   TOTALS
-========================================================= */
-
-function sumOpening() {
-
-    return PRODUCTS.reduce(
-        (total, product) =>
-            total +
-            Number(
-                state.opening[product] || 0
-            ),
-        0
-    );
-
-}
-
-
-function sumStockIn() {
-
-    return state.stockIn.reduce(
-        (total, item) =>
-            total +
-            Number(item.quantity),
-        0
-    );
-
-}
-
-
-function sumDistributed() {
-
-    return state.distributions.reduce(
-        (total, item) =>
-            total +
-            Number(item.quantity),
-        0
-    );
-
-}
-
-
-function sumRemaining() {
-
-    return PRODUCTS.reduce(
-        (total, product) =>
-            total +
-            getRemaining(product),
-        0
-    );
-
-}
-
-
-/* =========================================================
-   FORMATTING
-========================================================= */
+/* ========================================
+   FORMAT
+======================================== */
 
 function formatQty(number) {
 
-    return Number(number)
-        .toLocaleString(
-            undefined,
-            {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2
-            }
-        );
-
+    return Number(number).toLocaleString(
+        undefined,
+        {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }
+    );
 }
 
 
 function formatMoney(number) {
 
-    return Number(number)
-        .toLocaleString(
-            "en-PH",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
-
+    return Number(number).toLocaleString(
+        "en-PH",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
 }
 
 
-/* =========================================================
-   COMMON PAGE DATA
-========================================================= */
+/* ========================================
+   COMMON PAGE INFORMATION
+======================================== */
 
 function loadCommon() {
 
@@ -366,7 +323,6 @@ function loadCommon() {
 
         day.textContent =
             "Day " + state.day;
-
     }
 
 
@@ -387,15 +343,243 @@ function loadCommon() {
                     year: "numeric"
                 }
             );
-
     }
-
 }
 
 
-/* =========================================================
+/* ========================================
+   LOW STOCK
+======================================== */
+
+function getLowStockProducts() {
+
+    return PRODUCTS.filter(
+        product =>
+            getRemaining(product) < 10
+    );
+}
+
+
+function renderLowStockAlerts() {
+
+    const container =
+        document.getElementById(
+            "lowStockAlerts"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const lowProducts =
+        getLowStockProducts();
+
+
+    if (lowProducts.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-side">
+                No low stock items.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        lowProducts
+        .slice(0, 5)
+        .map(product => `
+
+            <div class="alert-item">
+
+                <div class="alert-dot">
+                    !
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${product}
+                    </strong>
+
+                    <small>
+                        ${formatQty(
+                            getRemaining(product)
+                        )} kg remaining
+                    </small>
+
+                </div>
+
+            </div>
+
+        `)
+        .join("");
+}
+
+
+/* ========================================
+   RECENT ACTIVITY
+======================================== */
+
+function renderRecentActivity() {
+
+    const container =
+        document.getElementById(
+            "recentActivity"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const stockActivity =
+        state.stockIn.map(item => ({
+
+            type: "Stock In",
+
+            text:
+                `${formatQty(item.quantity)} kg ${item.product}`,
+
+            detail:
+                item.supplier ||
+                "Stock received",
+
+            date:
+                item.date || ""
+        }));
+
+
+    const distributionActivity =
+        state.distributions.map(item => ({
+
+            type: "Distribution",
+
+            text:
+                `${formatQty(item.quantity)} kg ${item.product}`,
+
+            detail:
+                item.destination,
+
+            date:
+                item.date || ""
+        }));
+
+
+    const activities = [
+        ...stockActivity,
+        ...distributionActivity
+    ]
+    .sort(
+        (a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+    )
+    .slice(0, 4);
+
+
+    if (activities.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-side">
+                No activity recorded today.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        activities.map(item => `
+
+            <div class="activity-item">
+
+                <div class="activity-dot">
+
+                    ${
+                        item.type === "Stock In"
+                            ? "↓"
+                            : "→"
+                    }
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${item.type}: ${item.text}
+                    </strong>
+
+                    <small>
+                        ${item.detail}
+                    </small>
+
+                </div>
+
+            </div>
+
+        `)
+        .join("");
+}
+
+
+/* ========================================
+   INVENTORY SEARCH
+======================================== */
+
+function setupInventorySearch() {
+
+    const search =
+        document.getElementById(
+            "inventorySearch"
+        );
+
+
+    if (!search) {
+        return;
+    }
+
+
+    search.addEventListener(
+        "input",
+        function () {
+
+            const term =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            document
+                .querySelectorAll(
+                    "#inventoryBody tr"
+                )
+                .forEach(row => {
+
+                    const text =
+                        row.textContent
+                            .toLowerCase();
+
+
+                    row.style.display =
+                        text.includes(term)
+                            ? ""
+                            : "none";
+                });
+        }
+    );
+}
+
+
+/* ========================================
    DASHBOARD
-========================================================= */
+======================================== */
 
 function loadDashboard() {
 
@@ -423,14 +607,6 @@ function loadDashboard() {
     ).textContent =
         formatQty(
             sumDistributed()
-        ) + " kg";
-
-
-    document.getElementById(
-        "remainingTotal"
-    ).textContent =
-        formatQty(
-            sumRemaining()
         ) + " kg";
 
 
@@ -475,6 +651,7 @@ function loadDashboard() {
 
 
             return `
+
                 <tr>
 
                     <td>
@@ -496,49 +673,57 @@ function loadDashboard() {
                     </td>
 
                     <td class="qty">
-                        ${formatQty(remaining)} kg
+
+                        ${formatQty(
+                            remaining
+                        )} kg
+
                     </td>
 
                     <td>
+
                         <span class="
                             status
                             ${low ? "low" : "good"}
                         ">
+
                             ${
                                 low
                                     ? "Low Stock"
-                                    : "In Stock"
+                                    : "Good"
                             }
+
                         </span>
+
                     </td>
 
                 </tr>
+
             `;
 
-        }).join("");
+        })
+        .join("");
 
 
-    const closeDayButton =
-        document.getElementById(
-            "closeDayBtn"
-        );
+    renderRecentActivity();
+
+    renderLowStockAlerts();
+
+    setupInventorySearch();
 
 
-    if (closeDayButton) {
-
-        closeDayButton.addEventListener(
-            "click",
-            closeDay
-        );
-
-    }
-
+    document.getElementById(
+        "closeDayBtn"
+    ).addEventListener(
+        "click",
+        closeDay
+    );
 }
 
 
-/* =========================================================
+/* ========================================
    CLOSE DAY
-========================================================= */
+======================================== */
 
 function closeDay() {
 
@@ -557,7 +742,6 @@ function closeDay() {
 
         state.opening[product] =
             getRemaining(product);
-
     });
 
 
@@ -571,13 +755,12 @@ function closeDay() {
     saveState();
 
     loadDashboard();
-
 }
 
 
-/* =========================================================
+/* ========================================
    STOCK IN PAGE
-========================================================= */
+======================================== */
 
 function loadStockInPage() {
 
@@ -592,13 +775,15 @@ function loadStockInPage() {
 
     productSelect.innerHTML =
         PRODUCTS.map(
-            product =>
-                `
+            product => `
+
                 <option value="${product}">
                     ${product}
                 </option>
-                `
-        ).join("");
+
+            `
+        )
+        .join("");
 
 
     const dateInput =
@@ -622,13 +807,12 @@ function loadStockInPage() {
 
 
     renderStockRecords();
-
 }
 
 
-/* =========================================================
+/* ========================================
    ADD STOCK
-========================================================= */
+======================================== */
 
 function addStock(event) {
 
@@ -676,7 +860,6 @@ function addStock(event) {
         );
 
         return;
-
     }
 
 
@@ -691,20 +874,17 @@ function addStock(event) {
         unitCost: cost,
 
         date: date
-
     });
 
 
     /*
-        Update the current unit cost of the product
-        when a new cost is entered.
+        Update the latest cost of the product.
     */
 
     if (cost > 0) {
 
         state.unitCost[product] =
             cost;
-
     }
 
 
@@ -725,13 +905,12 @@ function addStock(event) {
 
 
     renderStockRecords();
-
 }
 
 
-/* =========================================================
-   STOCK IN RECORDS
-========================================================= */
+/* ========================================
+   STOCK RECORDS
+======================================== */
 
 function renderStockRecords() {
 
@@ -749,23 +928,24 @@ function renderStockRecords() {
         ) + " kg";
 
 
-    if (
-        state.stockIn.length === 0
-    ) {
+    if (state.stockIn.length === 0) {
 
         body.innerHTML = `
+
             <tr>
+
                 <td
                     colspan="5"
                     class="empty"
                 >
                     No stock received yet.
                 </td>
+
             </tr>
+
         `;
 
         return;
-
     }
 
 
@@ -780,51 +960,62 @@ function renderStockRecords() {
 
 
             return `
+
                 <tr>
 
                     <td>
+
                         <strong>
                             ${item.product}
                         </strong>
+
                     </td>
 
                     <td class="qty">
+
                         ${formatQty(
                             item.quantity
                         )} kg
+
                     </td>
 
                     <td>
+
                         ${
                             item.supplier ||
                             "—"
                         }
+
                     </td>
 
                     <td>
+
                         ₱${formatMoney(
                             item.unitCost || 0
                         )}
+
                     </td>
 
                     <td>
+
                         ₱${formatMoney(
                             amount
                         )}
+
                     </td>
 
                 </tr>
+
             `;
 
         })
         .join("");
-
 }
 
 
-/* =========================================================
+/* ========================================
    DISTRIBUTION PAGE
-========================================================= */
+======================================== */
 
 function loadDistributionPage() {
 
@@ -839,13 +1030,15 @@ function loadDistributionPage() {
 
     productSelect.innerHTML =
         PRODUCTS.map(
-            product =>
-                `
+            product => `
+
                 <option value="${product}">
                     ${product}
                 </option>
-                `
-        ).join("");
+
+            `
+        )
+        .join("");
 
 
     const destinationSelect =
@@ -856,13 +1049,15 @@ function loadDistributionPage() {
 
     destinationSelect.innerHTML =
         DESTINATIONS.map(
-            destination =>
-                `
+            destination => `
+
                 <option value="${destination}">
                     ${destination}
                 </option>
-                `
-        ).join("");
+
+            `
+        )
+        .join("");
 
 
     productSelect.addEventListener(
@@ -890,13 +1085,12 @@ function loadDistributionPage() {
     updateAvailable();
 
     renderDistributionRecords();
-
 }
 
 
-/* =========================================================
+/* ========================================
    AVAILABLE STOCK
-========================================================= */
+======================================== */
 
 function updateAvailable() {
 
@@ -919,13 +1113,12 @@ function updateAvailable() {
 
 
     validateDistribution();
-
 }
 
 
-/* =========================================================
-   DISTRIBUTION VALIDATION
-========================================================= */
+/* ========================================
+   VALIDATE DISTRIBUTION
+======================================== */
 
 function validateDistribution() {
 
@@ -971,15 +1164,13 @@ function validateDistribution() {
         warning.textContent = "";
 
         button.disabled = false;
-
     }
-
 }
 
 
-/* =========================================================
+/* ========================================
    ADD DISTRIBUTION
-========================================================= */
+======================================== */
 
 function addDistribution(event) {
 
@@ -1020,7 +1211,6 @@ function addDistribution(event) {
         );
 
         return;
-
     }
 
 
@@ -1034,7 +1224,6 @@ function addDistribution(event) {
 
         date:
             new Date().toISOString()
-
     });
 
 
@@ -1049,13 +1238,12 @@ function addDistribution(event) {
     updateAvailable();
 
     renderDistributionRecords();
-
 }
 
 
-/* =========================================================
+/* ========================================
    DISTRIBUTION RECORDS
-========================================================= */
+======================================== */
 
 function renderDistributionRecords() {
 
@@ -1078,18 +1266,21 @@ function renderDistributionRecords() {
     ) {
 
         body.innerHTML = `
+
             <tr>
+
                 <td
                     colspan="3"
                     class="empty"
                 >
                     No distribution recorded yet.
                 </td>
+
             </tr>
+
         `;
 
         return;
-
     }
 
 
@@ -1097,18 +1288,23 @@ function renderDistributionRecords() {
         [...state.distributions]
         .reverse()
         .map(item => `
+
             <tr>
 
                 <td>
+
                     <strong>
                         ${item.product}
                     </strong>
+
                 </td>
 
                 <td class="qty">
+
                     ${formatQty(
                         item.quantity
                     )} kg
+
                 </td>
 
                 <td>
@@ -1116,7 +1312,7 @@ function renderDistributionRecords() {
                 </td>
 
             </tr>
+
         `)
         .join("");
-
 }

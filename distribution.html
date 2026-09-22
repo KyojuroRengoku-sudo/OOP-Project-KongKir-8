@@ -1,34 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Distribution | Meatline Inventory</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
->
-    <link rel="stylesheet" href="styles.css">
+    <title>
+        Distribution | Meatline Inventory
+    </title>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
 </head>
+
 
 <body>
 
 <div class="app">
 
+
     <aside class="sidebar">
 
         <div class="brand">
 
-            <div class="brand-logo">M</div>
+            <div class="brand-logo">
+                M
+            </div>
 
             <div>
                 <h2>Meatline</h2>
-                <p>Inventory System</p>
+                <p>Chicken Inventory</p>
             </div>
 
         </div>
@@ -36,18 +62,38 @@
 
         <nav class="nav">
 
-            <a href="dashboard.html" class="nav-link">
-                <span class="nav-icon">▦</span>
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
                 Dashboard
             </a>
 
-            <a href="stock-in.html" class="nav-link">
-                <span class="nav-icon">＋</span>
+
+            <a
+                href="stock-in.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    ↓
+                </span>
+
                 Stock In
             </a>
 
-            <a href="distribution.html" class="nav-link active">
-                <span class="nav-icon">⇄</span>
+
+            <a
+                href="distribution.html"
+                class="nav-link active"
+            >
+                <span class="nav-icon">
+                    ⇄
+                </span>
+
                 Distribution
             </a>
 
@@ -55,8 +101,15 @@
 
 
         <div class="sidebar-bottom">
-            <p>Current Day</p>
-            <strong id="sidebarDay">Day 1</strong>
+
+            <span>
+                Current Day
+            </span>
+
+            <strong id="sidebarDay">
+                Day 1
+            </strong>
+
         </div>
 
     </aside>
@@ -64,150 +117,245 @@
 
     <main class="main">
 
-        <header class="topbar">
 
-            <div>
-                <h1>Distribution</h1>
+        <header class="app-header">
+
+            <div class="header-left">
+
+                <button
+                    class="menu-btn"
+                    aria-label="Menu"
+                >
+                    ☰
+                </button>
+
+                <h1>
+                    Distribution
+                </h1>
+
             </div>
 
-            <div class="date-box">
-                <span>Today</span>
-                <strong id="todayDate"></strong>
+
+            <div class="header-date">
+
+                <span>
+                    Today
+                </span>
+
+                <strong id="todayDate">
+                </strong>
+
             </div>
 
         </header>
 
 
-        <div class="two-column">
-
-            <!-- DISTRIBUTION FORM -->
-            <section class="panel">
-
-                <div class="panel-header">
-
-                    <div>
-                        <h2>Distribution Entry</h2>
-                    </div>
-
-                </div>
+        <div class="content page-content">
 
 
-                <form id="distributionForm">
-
-                    <div class="form-group">
-
-                        <label for="distProduct">
-                            Product
-                        </label>
-
-                        <select id="distProduct" required></select>
-
-                    </div>
-
-
-                    <div class="available-box">
-
-                        <span>Available Stock</span>
-
-                        <strong id="availableQty">
-                            0 kg
-                        </strong>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="distQty">
-                            Quantity (kg)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="distQty"
-                            min="0.01"
-                            step="0.01"
-                            placeholder="0.00"
-                            required
-                        >
-
-                        <small id="distWarning" class="warning" aria-live="polite"></small>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="distDestination">
-                            Destination
-                        </label>
-
-                        <select id="distDestination" required></select>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="primary-btn"
-                        id="distSubmit"
-                    >
-                        Release Stock
-                    </button>
-
-                </form>
-
-            </section>
-
-
-            <!-- SUMMARY -->
-            <section class="side-summary">
-
-                <h2>Total Distributed</h2>
-
-                <div class="big-number" id="distributionPageTotal">
-                    0 kg
-                </div>
-
-            </section>
-
-        </div>
-
-
-        <section class="panel records-panel">
-
-            <div class="panel-header">
+            <section class="page-summary">
 
                 <div>
-                    <h2>Distribution Records</h2>
+
+                    <span>
+                        Total Distributed
+                    </span>
+
+                    <h2 id="distributionPageTotal">
+                        0 kg
+                    </h2>
+
                 </div>
 
+
+                <div class="summary-icon orange">
+                    →
+                </div>
+
+            </section>
+
+
+            <div class="entry-grid">
+
+
+                <section class="panel">
+
+                    <div class="panel-title">
+
+                        <span class="title-icon">
+                            ⇄
+                        </span>
+
+                        <h2>
+                            Distribution Entry
+                        </h2>
+
+                    </div>
+
+
+                    <form id="distributionForm">
+
+
+                        <div class="form-group">
+
+                            <label for="distProduct">
+                                Product
+                            </label>
+
+                            <select
+                                id="distProduct"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="available-box">
+
+                            <span>
+                                Available Stock
+                            </span>
+
+                            <strong id="availableQty">
+                                0 kg
+                            </strong>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="distQty">
+                                Quantity (kg)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="distQty"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="0.00"
+                                required
+                            >
+
+                            <small
+                                id="distWarning"
+                                class="warning"
+                                aria-live="polite"
+                            >
+                            </small>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="distDestination">
+                                Destination
+                            </label>
+
+                            <select
+                                id="distDestination"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                            id="distSubmit"
+                        >
+                            Release Stock
+                        </button>
+
+                    </form>
+
+                </section>
+
+
+                <section class="panel info-panel">
+
+                    <div class="info-icon orange">
+                        ⇄
+                    </div>
+
+                    <h2>
+                        Stock Release
+                    </h2>
+
+                    <p>
+                        Distribution reduces the available
+                        stock of the selected product and
+                        records its destination.
+                    </p>
+
+                </section>
+
             </div>
 
 
-            <div class="table-wrap">
+            <section class="panel records-panel">
 
-                <table>
+                <div class="panel-title">
 
-                    <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Destination</th>
-                    </tr>
-                    </thead>
+                    <span class="title-icon">
+                        ▤
+                    </span>
 
-                    <tbody id="distributionRecords"></tbody>
+                    <h2>
+                        Distribution Records
+                    </h2>
 
-                </table>
+                </div>
 
-            </div>
 
-        </section>
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Destination</th>
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody id="distributionRecords">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <footer>
+
+                <span>
+                    Meatline
+                </span>
+
+                <span>
+                    Chicken Inventory System
+                </span>
+
+            </footer>
+
+        </div>
 
     </main>
 
 </div>
+
 
 <script src="app.js"></script>
 

@@ -1,60 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Stock In | Meatline Inventory</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>
+        Stock In | Meatline Inventory
+    </title>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
->
-    <link rel="stylesheet" href="styles.css">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
 </head>
+
 
 <body>
 
 <div class="app">
 
+
     <aside class="sidebar">
 
         <div class="brand">
 
-            <div class="brand-logo">M</div>
+            <div class="brand-logo">
+                M
+            </div>
 
             <div>
                 <h2>Meatline</h2>
-                <p>Inventory System</p>
+                <p>Chicken Inventory</p>
             </div>
 
         </div>
 
+
         <nav class="nav">
 
-            <a href="dashboard.html" class="nav-link">
-                <span class="nav-icon">▦</span>
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
                 Dashboard
             </a>
 
-            <a href="stock-in.html" class="nav-link active">
-                <span class="nav-icon">＋</span>
+
+            <a
+                href="stock-in.html"
+                class="nav-link active"
+            >
+                <span class="nav-icon">
+                    ↓
+                </span>
+
                 Stock In
             </a>
 
-            <a href="distribution.html" class="nav-link">
-                <span class="nav-icon">⇄</span>
+
+            <a
+                href="distribution.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    ⇄
+                </span>
+
                 Distribution
             </a>
 
         </nav>
 
+
         <div class="sidebar-bottom">
-            <p>Current Day</p>
-            <strong id="sidebarDay">Day 1</strong>
+
+            <span>
+                Current Day
+            </span>
+
+            <strong id="sidebarDay">
+                Day 1
+            </strong>
+
         </div>
 
     </aside>
@@ -62,174 +117,266 @@
 
     <main class="main">
 
-        <header class="topbar">
 
-            <div>
-                <h1>Stock In</h1>
+        <header class="app-header">
+
+            <div class="header-left">
+
+                <button
+                    class="menu-btn"
+                    aria-label="Menu"
+                >
+                    ☰
+                </button>
+
+                <h1>
+                    Stock In
+                </h1>
+
             </div>
 
-            <div class="date-box">
-                <span>Today</span>
-                <strong id="todayDate"></strong>
+
+            <div class="header-date">
+
+                <span>
+                    Today
+                </span>
+
+                <strong id="todayDate">
+                </strong>
+
             </div>
 
         </header>
 
 
-        <div class="two-column">
+        <div class="content page-content">
 
-            <!-- FORM -->
-            <section class="panel">
 
-                <div class="panel-header">
-                    <div>
-                        <h2>Stock Entry</h2>
-                    </div>
+            <section class="page-summary">
+
+                <div>
+
+                    <span>
+                        Stock Received
+                    </span>
+
+                    <h2 id="stockPageTotal">
+                        0 kg
+                    </h2>
+
                 </div>
 
 
-                <form id="stockInForm">
+                <div class="summary-icon">
+                    ↓
+                </div>
 
-                    <div class="form-group">
+            </section>
 
-                        <label for="stockProduct">
-                            Product
-                        </label>
 
-                        <select id="stockProduct" required></select>
+            <div class="entry-grid">
+
+
+                <!-- FORM -->
+                <section class="panel">
+
+                    <div class="panel-title">
+
+                        <span class="title-icon">
+                            ＋
+                        </span>
+
+                        <h2>
+                            Stock Entry
+                        </h2>
 
                     </div>
 
 
-                    <div class="form-row">
+                    <form id="stockInForm">
+
 
                         <div class="form-group">
 
-                            <label for="stockQty">
-                                Quantity (kg)
+                            <label for="stockProduct">
+                                Product
+                            </label>
+
+                            <select
+                                id="stockProduct"
+                                required
+                            >
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="stockQty">
+                                    Quantity (kg)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="stockQty"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="0.00"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="stockCost">
+                                    Unit Cost (₱)
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="stockCost"
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="0.00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="stockSupplier">
+                                Supplier / Source
                             </label>
 
                             <input
-                                type="number"
-                                id="stockQty"
-                                step="0.01"
-                                min="0.01"
-                                placeholder="0.00"
+                                type="text"
+                                id="stockSupplier"
+                                placeholder="Enter supplier"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="stockDate">
+                                Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="stockDate"
                                 required
                             >
 
                         </div>
 
 
-                        <div class="form-group">
-
-                            <label for="stockCost">
-                                Unit Cost (₱)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="stockCost"
-                                step="0.01"
-                                min="0"
-                                placeholder="0.00"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="stockSupplier">
-                            Supplier / Source
-                        </label>
-
-                        <input
-                            type="text"
-                            id="stockSupplier"
-                            placeholder="Enter supplier"
+                        <button
+                            type="submit"
+                            class="primary-btn"
                         >
+                            Add Stock
+                        </button>
 
+                    </form>
+
+                </section>
+
+
+                <!-- INFORMATION -->
+                <section class="panel info-panel">
+
+                    <div class="info-icon">
+                        ✓
                     </div>
 
+                    <h2>
+                        Inventory Update
+                    </h2>
 
-                    <div class="form-group">
+                    <p>
+                        New stock entries are added to the
+                        current available quantity and
+                        reflected on the dashboard.
+                    </p>
 
-                        <label for="stockDate">
-                            Date
-                        </label>
+                </section>
 
-                        <input
-                            type="date"
-                            id="stockDate"
-                            required
-                        >
-
-                    </div>
-
-
-                    <button type="submit" class="primary-btn">
-                        + Add Stock
-                    </button>
-
-                </form>
-
-            </section>
+            </div>
 
 
-            <!-- SUMMARY -->
-            <section class="side-summary">
+            <!-- RECORDS -->
+            <section class="panel records-panel">
 
-                <h2>Stock Received</h2>
+                <div class="panel-title">
 
-                <div class="big-number" id="stockPageTotal">
-                    0 kg
+                    <span class="title-icon">
+                        ▤
+                    </span>
+
+                    <h2>
+                        Stock In Records
+                    </h2>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Supplier</th>
+                            <th>Unit Cost</th>
+                            <th>Amount</th>
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody id="stockRecords">
+                        </tbody>
+
+                    </table>
+
                 </div>
 
             </section>
+
+
+            <footer>
+
+                <span>
+                    Meatline
+                </span>
+
+                <span>
+                    Chicken Inventory System
+                </span>
+
+            </footer>
 
         </div>
-
-
-        <!-- RECORDS -->
-        <section class="panel records-panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <h2>Stock In Records</h2>
-                </div>
-
-            </div>
-
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Supplier</th>
-                        <th>Unit Cost</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-
-                    <tbody id="stockRecords"></tbody>
-
-                </table>
-
-            </div>
-
-        </section>
 
     </main>
 
 </div>
+
 
 <script src="app.js"></script>
 

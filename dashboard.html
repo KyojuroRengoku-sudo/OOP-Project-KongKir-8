@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Dashboard | Meatline Inventory</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -23,23 +25,28 @@
     <aside class="sidebar">
 
         <div class="brand">
-            <div class="brand-logo">M</div>
+
+            <div class="brand-logo">
+                M
+            </div>
 
             <div>
                 <h2>Meatline</h2>
-                <p>Inventory System</p>
+                <p>Chicken Inventory</p>
             </div>
+
         </div>
+
 
         <nav class="nav">
 
             <a href="dashboard.html" class="nav-link active">
-                <span class="nav-icon">▦</span>
+                <span class="nav-icon">⌂</span>
                 Dashboard
             </a>
 
             <a href="stock-in.html" class="nav-link">
-                <span class="nav-icon">＋</span>
+                <span class="nav-icon">↓</span>
                 Stock In
             </a>
 
@@ -50,128 +57,361 @@
 
         </nav>
 
+
         <div class="sidebar-bottom">
-            <p>Current Day</p>
-            <strong id="sidebarDay">Day 1</strong>
+
+            <span>Current Day</span>
+
+            <strong id="sidebarDay">
+                Day 1
+            </strong>
+
         </div>
 
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <main class="main">
 
-        <header class="topbar">
+        <!-- TOP HEADER -->
+        <header class="app-header">
 
-            <div>
-                <h1>Dashboard</h1>
+            <div class="header-left">
+
+                <button
+                    class="menu-btn"
+                    aria-label="Menu"
+                >
+                    ☰
+                </button>
+
+
+                <div class="search-box">
+
+                    <span>⌕</span>
+
+                    <input
+                        id="inventorySearch"
+                        type="search"
+                        placeholder="Search product..."
+                    >
+
+                </div>
+
             </div>
 
-            <div class="date-box">
-                <span>Today</span>
-                <strong id="todayDate"></strong>
+
+            <div class="admin-box">
+
+                <div class="admin-avatar">
+                    M
+                </div>
+
+                <strong>Admin</strong>
+
             </div>
 
         </header>
 
 
-        <!-- SUMMARY CARDS -->
-        <section class="cards">
+        <div class="content">
 
-            <div class="card">
-                <div class="card-top">
-                    <span>Yesterday's Stock</span>
-                    <div class="icon-box" aria-hidden="true">↺</div>
+            <div class="dashboard-grid">
+
+                <!-- LEFT SIDE -->
+                <div class="dashboard-main">
+
+                    <!-- WELCOME -->
+                    <section class="welcome-banner">
+
+                        <div>
+
+                            <h1>
+                                Meatline Inventory
+                            </h1>
+
+                            <p>
+                                Daily chicken stock monitoring
+                                and distribution.
+                            </p>
+
+                        </div>
+
+                        <div class="welcome-mark">
+                            M
+                        </div>
+
+                    </section>
+
+
+                    <!-- SUMMARY CARDS -->
+                    <section class="cards">
+
+                        <div class="card">
+
+                            <div class="card-icon opening">
+                                ↺
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Yesterday's Stock
+                                </span>
+
+                                <h2 id="openingTotal">
+                                    0 kg
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card">
+
+                            <div class="card-icon stock">
+                                ↓
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Stock In
+                                </span>
+
+                                <h2 id="stockInTotal">
+                                    0 kg
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card">
+
+                            <div class="card-icon distributed">
+                                →
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Distributed
+                                </span>
+
+                                <h2 id="distributedTotal">
+                                    0 kg
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card">
+
+                            <div class="card-icon value">
+                                ₱
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Stock Value
+                                </span>
+
+                                <h2 id="stockValueTotal">
+                                    ₱0.00
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- INVENTORY TABLE -->
+                    <section class="panel inventory-panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-title">
+
+                                <span class="title-icon">
+                                    ▣
+                                </span>
+
+                                <h2>
+                                    Inventory Overview
+                                </h2>
+
+                            </div>
+
+
+                            <button
+                                class="secondary-btn"
+                                id="closeDayBtn"
+                            >
+                                Close Day
+                            </button>
+
+                        </div>
+
+
+                        <div class="table-wrap">
+
+                            <table>
+
+                                <thead>
+
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Yesterday</th>
+                                    <th>Stock In</th>
+                                    <th>Distributed</th>
+                                    <th>Remaining</th>
+                                    <th>Status</th>
+                                </tr>
+
+                                </thead>
+
+
+                                <tbody id="inventoryBody">
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </section>
+
                 </div>
 
-                <h2 id="openingTotal">0 kg</h2>
+
+                <!-- RIGHT SIDE -->
+                <aside class="dashboard-side">
+
+                    <!-- QUICK ACTIONS -->
+                    <section class="panel quick-panel">
+
+                        <div class="panel-title">
+
+                            <span class="title-icon">
+                                ⚡
+                            </span>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                        </div>
+
+
+                        <a
+                            class="action-btn"
+                            href="stock-in.html"
+                        >
+
+                            <span>＋</span>
+
+                            Record Stock In
+
+                        </a>
+
+
+                        <a
+                            class="action-btn"
+                            href="distribution.html"
+                        >
+
+                            <span>⇄</span>
+
+                            Record Distribution
+
+                        </a>
+
+                    </section>
+
+
+                    <!-- RECENT ACTIVITY -->
+                    <section class="panel">
+
+                        <div class="panel-title">
+
+                            <span class="title-icon">
+                                ◷
+                            </span>
+
+                            <h2>
+                                Recent Activity
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            id="recentActivity"
+                            class="activity-list"
+                        >
+                        </div>
+
+                    </section>
+
+
+                    <!-- LOW STOCK -->
+                    <section class="panel">
+
+                        <div class="panel-title">
+
+                            <span class="title-icon warning-icon">
+                                ▲
+                            </span>
+
+                            <h2>
+                                Low Stock Alerts
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            id="lowStockAlerts"
+                            class="alert-list"
+                        >
+                        </div>
+
+                    </section>
+
+                </aside>
+
             </div>
 
 
-            <div class="card">
-                <div class="card-top">
-                    <span>Stock In</span>
-                    <div class="icon-box green" aria-hidden="true">↓</div>
-                </div>
+            <footer>
 
-                <h2 id="stockInTotal">0 kg</h2>
-            </div>
+                <span>
+                    Meatline
+                </span>
 
+                <span>
+                    Chicken Inventory System
+                </span>
 
-            <div class="card">
-                <div class="card-top">
-                    <span>Distributed</span>
-                    <div class="icon-box orange" aria-hidden="true">→</div>
-                </div>
+            </footer>
 
-                <h2 id="distributedTotal">0 kg</h2>
-            </div>
-
-
-            <div class="card highlight">
-                <div class="card-top">
-                    <span>Remaining Stock</span>
-                    <div class="icon-box white" aria-hidden="true">✓</div>
-                </div>
-
-                <h2 id="remainingTotal">0 kg</h2>
-            </div>
-
-            <div class="card value">
-                <div class="card-top">
-                    <span>Stock Value</span>
-                    <div class="icon-box gold" aria-hidden="true">₱</div>
-                </div>
-                <h2 id="stockValueTotal">₱0.00</h2>
-            </div>
-
-        </section>
-
-
-        <!-- INVENTORY -->
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-                    <h2>Inventory Overview</h2>
-                </div>
-
-                <button class="secondary-btn" id="closeDayBtn">
-                    Close Day & Roll Forward
-                </button>
-
-            </div>
-
-
-            <div class="table-wrap">
-
-                <table>
-
-                    <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Yesterday</th>
-                        <th>Stock In</th>
-                        <th>Distributed</th>
-                        <th>Remaining</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-
-                    <tbody id="inventoryBody"></tbody>
-
-                </table>
-
-            </div>
-
-        </section>
+        </div>
 
     </main>
 
 </div>
 
+
 <script src="app.js"></script>
+
 <script>
     loadDashboard();
 </script>
