@@ -31,6 +31,10 @@ const DESTINATIONS = [
 const STORAGE_KEY = "meatline_inventory_v2";
 
 
+/* =========================================================
+   DEFAULT OPENING STOCK
+========================================================= */
+
 const DEFAULT_OPENING = {
     "Whole Chicken": 89.55,
     "BackBones": 107.25,
@@ -51,6 +55,34 @@ const DEFAULT_OPENING = {
 };
 
 
+/* =========================================================
+   DEFAULT UNIT COST
+========================================================= */
+
+const DEFAULT_COST = {
+    "Whole Chicken": 123.5,
+    "BackBones": 90,
+    "Neck": 70,
+    "SKT Bones": 80,
+    "Skin": 90,
+    "Cuttings": 136.5,
+    "Fillet": 250,
+    "Liver": 81.7,
+    "Gizzard / B": 100,
+    "Atay Baticon": 130,
+    "Feet": 58.3,
+    "Heads": 35,
+    "Intestine": 55,
+    "Crps / Prvn / BTC": 60,
+    "Dugo": 22.3,
+    "Fats": 35
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
 function getDefaultState() {
 
     return {
@@ -58,6 +90,10 @@ function getDefaultState() {
 
         opening: {
             ...DEFAULT_OPENING
+        },
+
+        unitCost: {
+            ...DEFAULT_COST
         },
 
         stockIn: [],
@@ -73,13 +109,51 @@ function loadState() {
     const saved =
         localStorage.getItem(STORAGE_KEY);
 
+
     if (!saved) {
         return getDefaultState();
     }
 
+
     try {
 
-        return JSON.parse(saved);
+        const savedState =
+            JSON.parse(saved);
+
+
+        /*
+            Compatibility for older saved data.
+
+            If the browser already has inventory data
+            before unitCost was added, this makes sure
+            the new unitCost property is still available.
+        */
+
+        savedState.opening = {
+            ...DEFAULT_OPENING,
+            ...(savedState.opening || {})
+        };
+
+
+        savedState.unitCost = {
+            ...DEFAULT_COST,
+            ...(savedState.unitCost || {})
+        };
+
+
+        savedState.stockIn =
+            savedState.stockIn || [];
+
+
+        savedState.distributions =
+            savedState.distributions || [];
+
+
+        savedState.day =
+            savedState.day || 1;
+
+
+        return savedState;
 
     } catch (error) {
 
@@ -103,9 +177,9 @@ function saveState() {
 let state = loadState();
 
 
-/* =========================
+/* =========================================================
    CALCULATIONS
-========================= */
+========================================================= */
 
 function getStockIn(product) {
 
@@ -140,7 +214,10 @@ function getDistributed(product) {
 function getRemaining(product) {
 
     const opening =
-        Number(state.opening[product] || 0);
+        Number(
+            state.opening[product] || 0
+        );
+
 
     return (
         opening +
@@ -151,12 +228,54 @@ function getRemaining(product) {
 }
 
 
+/* =========================================================
+   UNIT COST AND STOCK VALUE
+========================================================= */
+
+function getUnitCost(product) {
+
+    return Number(
+        state.unitCost?.[product] ??
+        DEFAULT_COST[product] ??
+        0
+    );
+
+}
+
+
+function getStockValue(product) {
+
+    return (
+        getRemaining(product) *
+        getUnitCost(product)
+    );
+
+}
+
+
+function sumStockValue() {
+
+    return PRODUCTS.reduce(
+        (total, product) =>
+            total + getStockValue(product),
+        0
+    );
+
+}
+
+
+/* =========================================================
+   TOTALS
+========================================================= */
+
 function sumOpening() {
 
     return PRODUCTS.reduce(
         (total, product) =>
             total +
-            Number(state.opening[product] || 0),
+            Number(
+                state.opening[product] || 0
+            ),
         0
     );
 
@@ -167,7 +286,8 @@ function sumStockIn() {
 
     return state.stockIn.reduce(
         (total, item) =>
-            total + Number(item.quantity),
+            total +
+            Number(item.quantity),
         0
     );
 
@@ -178,7 +298,8 @@ function sumDistributed() {
 
     return state.distributions.reduce(
         (total, item) =>
-            total + Number(item.quantity),
+            total +
+            Number(item.quantity),
         0
     );
 
@@ -189,12 +310,17 @@ function sumRemaining() {
 
     return PRODUCTS.reduce(
         (total, product) =>
-            total + getRemaining(product),
+            total +
+            getRemaining(product),
         0
     );
 
 }
 
+
+/* =========================================================
+   FORMATTING
+========================================================= */
 
 function formatQty(number) {
 
@@ -224,23 +350,31 @@ function formatMoney(number) {
 }
 
 
-/* =========================
+/* =========================================================
    COMMON PAGE DATA
-========================= */
+========================================================= */
 
 function loadCommon() {
 
     const day =
-        document.getElementById("sidebarDay");
+        document.getElementById(
+            "sidebarDay"
+        );
+
 
     if (day) {
+
         day.textContent =
             "Day " + state.day;
+
     }
 
 
     const date =
-        document.getElementById("todayDate");
+        document.getElementById(
+            "todayDate"
+        );
+
 
     if (date) {
 
@@ -259,9 +393,9 @@ function loadCommon() {
 }
 
 
-/* =========================
+/* =========================================================
    DASHBOARD
-========================= */
+========================================================= */
 
 function loadDashboard() {
 
@@ -271,25 +405,42 @@ function loadDashboard() {
     document.getElementById(
         "openingTotal"
     ).textContent =
-        formatQty(sumOpening()) + " kg";
+        formatQty(
+            sumOpening()
+        ) + " kg";
 
 
     document.getElementById(
         "stockInTotal"
     ).textContent =
-        formatQty(sumStockIn()) + " kg";
+        formatQty(
+            sumStockIn()
+        ) + " kg";
 
 
     document.getElementById(
         "distributedTotal"
     ).textContent =
-        formatQty(sumDistributed()) + " kg";
+        formatQty(
+            sumDistributed()
+        ) + " kg";
 
 
     document.getElementById(
         "remainingTotal"
     ).textContent =
-        formatQty(sumRemaining()) + " kg";
+        formatQty(
+            sumRemaining()
+        ) + " kg";
+
+
+    document.getElementById(
+        "stockValueTotal"
+    ).textContent =
+        "₱" +
+        formatMoney(
+            sumStockValue()
+        );
 
 
     const body =
@@ -306,14 +457,18 @@ function loadDashboard() {
                     state.opening[product] || 0
                 );
 
+
             const stockIn =
                 getStockIn(product);
+
 
             const distributed =
                 getDistributed(product);
 
+
             const remaining =
                 getRemaining(product);
+
 
             const low =
                 remaining < 10;
@@ -363,15 +518,27 @@ function loadDashboard() {
         }).join("");
 
 
-    document.getElementById(
-        "closeDayBtn"
-    ).addEventListener(
-        "click",
-        closeDay
-    );
+    const closeDayButton =
+        document.getElementById(
+            "closeDayBtn"
+        );
+
+
+    if (closeDayButton) {
+
+        closeDayButton.addEventListener(
+            "click",
+            closeDay
+        );
+
+    }
 
 }
 
+
+/* =========================================================
+   CLOSE DAY
+========================================================= */
 
 function closeDay() {
 
@@ -408,9 +575,9 @@ function closeDay() {
 }
 
 
-/* =========================
-   STOCK IN
-========================= */
+/* =========================================================
+   STOCK IN PAGE
+========================================================= */
 
 function loadStockInPage() {
 
@@ -426,9 +593,11 @@ function loadStockInPage() {
     productSelect.innerHTML =
         PRODUCTS.map(
             product =>
-                `<option value="${product}">
+                `
+                <option value="${product}">
                     ${product}
-                </option>`
+                </option>
+                `
         ).join("");
 
 
@@ -456,6 +625,10 @@ function loadStockInPage() {
 
 }
 
+
+/* =========================================================
+   ADD STOCK
+========================================================= */
 
 function addStock(event) {
 
@@ -522,6 +695,19 @@ function addStock(event) {
     });
 
 
+    /*
+        Update the current unit cost of the product
+        when a new cost is entered.
+    */
+
+    if (cost > 0) {
+
+        state.unitCost[product] =
+            cost;
+
+    }
+
+
     saveState();
 
 
@@ -543,6 +729,10 @@ function addStock(event) {
 }
 
 
+/* =========================================================
+   STOCK IN RECORDS
+========================================================= */
+
 function renderStockRecords() {
 
     const body =
@@ -554,11 +744,14 @@ function renderStockRecords() {
     document.getElementById(
         "stockPageTotal"
     ).textContent =
-        formatQty(sumStockIn()) +
-        " kg";
+        formatQty(
+            sumStockIn()
+        ) + " kg";
 
 
-    if (state.stockIn.length === 0) {
+    if (
+        state.stockIn.length === 0
+    ) {
 
         body.innerHTML = `
             <tr>
@@ -582,8 +775,8 @@ function renderStockRecords() {
         .map(item => {
 
             const amount =
-                item.quantity *
-                item.unitCost;
+                Number(item.quantity) *
+                Number(item.unitCost || 0);
 
 
             return `
@@ -596,8 +789,9 @@ function renderStockRecords() {
                     </td>
 
                     <td class="qty">
-                        ${formatQty(item.quantity)}
-                        kg
+                        ${formatQty(
+                            item.quantity
+                        )} kg
                     </td>
 
                     <td>
@@ -609,7 +803,7 @@ function renderStockRecords() {
 
                     <td>
                         ₱${formatMoney(
-                            item.unitCost
+                            item.unitCost || 0
                         )}
                     </td>
 
@@ -622,14 +816,15 @@ function renderStockRecords() {
                 </tr>
             `;
 
-        }).join("");
+        })
+        .join("");
 
 }
 
 
-/* =========================
-   DISTRIBUTION
-========================= */
+/* =========================================================
+   DISTRIBUTION PAGE
+========================================================= */
 
 function loadDistributionPage() {
 
@@ -645,9 +840,11 @@ function loadDistributionPage() {
     productSelect.innerHTML =
         PRODUCTS.map(
             product =>
-                `<option value="${product}">
+                `
+                <option value="${product}">
                     ${product}
-                </option>`
+                </option>
+                `
         ).join("");
 
 
@@ -660,9 +857,11 @@ function loadDistributionPage() {
     destinationSelect.innerHTML =
         DESTINATIONS.map(
             destination =>
-                `<option value="${destination}">
+                `
+                <option value="${destination}">
                     ${destination}
-                </option>`
+                </option>
+                `
         ).join("");
 
 
@@ -695,6 +894,10 @@ function loadDistributionPage() {
 }
 
 
+/* =========================================================
+   AVAILABLE STOCK
+========================================================= */
+
 function updateAvailable() {
 
     const product =
@@ -710,14 +913,19 @@ function updateAvailable() {
     document.getElementById(
         "availableQty"
     ).textContent =
-        formatQty(remaining) +
-        " kg";
+        formatQty(
+            remaining
+        ) + " kg";
 
 
     validateDistribution();
 
 }
 
+
+/* =========================================================
+   DISTRIBUTION VALIDATION
+========================================================= */
 
 function validateDistribution() {
 
@@ -768,6 +976,10 @@ function validateDistribution() {
 
 }
 
+
+/* =========================================================
+   ADD DISTRIBUTION
+========================================================= */
 
 function addDistribution(event) {
 
@@ -840,6 +1052,10 @@ function addDistribution(event) {
 
 }
 
+
+/* =========================================================
+   DISTRIBUTION RECORDS
+========================================================= */
 
 function renderDistributionRecords() {
 

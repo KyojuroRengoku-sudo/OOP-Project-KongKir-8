@@ -1,6 +1,6 @@
 /* =========================================================
    MEATLINE INVENTORY SYSTEM
-   Refined Frontend UI
+   ROBOTO UI
 ========================================================= */
 
 * {
@@ -58,6 +58,8 @@ body {
         Arial,
         Helvetica,
         sans-serif;
+
+    font-weight: 400;
 
     background: var(--background);
     color: var(--text);
@@ -141,7 +143,7 @@ body {
     color: var(--sidebar);
 
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 700;
 
     box-shadow:
         0 4px 15px rgba(0,0,0,.12);
@@ -149,21 +151,24 @@ body {
 
 .brand h2 {
     font-size: 19px;
-    font-weight: 750;
+    font-weight: 700;
 
-    letter-spacing: -.3px;
+    letter-spacing: -.2px;
 }
 
 .brand p {
     margin-top: 2px;
 
     font-size: 11px;
+    font-weight: 400;
 
     color: #91aaa0;
 }
 
 
-/* NAVIGATION */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 .nav {
     display: flex;
@@ -188,8 +193,9 @@ body {
 
     color: #a7bbb3;
 
-    font-size: 13.5px;
-    font-weight: 600;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
 
     text-decoration: none;
 
@@ -211,6 +217,8 @@ body {
     background: rgba(255,255,255,.11);
 
     color: white;
+
+    font-weight: 600;
 }
 
 .nav-link.active::before {
@@ -255,16 +263,16 @@ body {
     color: #7f998e;
 
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
 
-    letter-spacing: 1.1px;
+    letter-spacing: 1px;
 
     text-transform: uppercase;
 }
 
 .sidebar-bottom strong {
     font-size: 14px;
-    font-weight: 650;
+    font-weight: 600;
 }
 
 
@@ -298,35 +306,16 @@ body {
     margin-bottom: 30px;
 }
 
-.eyebrow {
-    margin-bottom: 7px;
-
-    color: var(--primary);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 1.6px;
-
-    text-transform: uppercase;
-}
 
 .topbar h1 {
     margin-bottom: 6px;
 
     font-size: 31px;
-    font-weight: 750;
+    font-weight: 700;
 
-    letter-spacing: -1px;
+    letter-spacing: -.5px;
 }
 
-.subtitle {
-    color: var(--text-soft);
-
-    font-size: 13.5px;
-
-    line-height: 1.5;
-}
 
 
 /* DATE */
@@ -353,17 +342,17 @@ body {
 
     color: var(--text-light);
 
-    font-size: 9px;
-    font-weight: 750;
+    font-size: 10px;
+    font-weight: 500;
 
-    letter-spacing: .8px;
+    letter-spacing: .7px;
 
     text-transform: uppercase;
 }
 
 .date-box strong {
-    font-size: 12.5px;
-    font-weight: 650;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 
@@ -375,7 +364,7 @@ body {
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(auto-fit, minmax(190px, 1fr));
 
     gap: 16px;
 
@@ -421,8 +410,8 @@ body {
 
     color: var(--text-soft);
 
-    font-size: 11.5px;
-    font-weight: 650;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .icon-box {
@@ -457,20 +446,15 @@ body {
 .card h2 {
     margin-bottom: 6px;
 
-    font-size: 27px;
-    font-weight: 760;
+    font-size: 28px;
+    font-weight: 700;
 
-    letter-spacing: -.7px;
-}
-
-.card > p {
-    color: var(--text-light);
-
-    font-size: 11.5px;
+    letter-spacing: -.5px;
 }
 
 
-/* IMPORTANT CARD */
+
+/* REMAINING STOCK CARD */
 
 .card.highlight {
     border: none;
@@ -506,8 +490,7 @@ body {
         rgba(255,255,255,.055);
 }
 
-.card.highlight .card-top,
-.card.highlight > p {
+.card.highlight .card-top {
     color: #c7ddd3;
 }
 
@@ -548,9 +531,9 @@ body {
 
 .panel-header h2 {
     font-size: 18px;
-    font-weight: 720;
+    font-weight: 600;
 
-    letter-spacing: -.3px;
+    letter-spacing: -.2px;
 }
 
 .records-panel {
@@ -559,7 +542,7 @@ body {
 
 
 /* =========================================================
-   TABLES
+   TABLE
 ========================================================= */
 
 .table-wrap {
@@ -579,6 +562,8 @@ table {
     border-collapse: collapse;
 
     background: white;
+
+    font-family: "Roboto", sans-serif;
 }
 
 thead {
@@ -595,10 +580,10 @@ th {
 
     text-align: left;
 
-    font-size: 9.5px;
-    font-weight: 800;
+    font-size: 11px;
+    font-weight: 600;
 
-    letter-spacing: .75px;
+    letter-spacing: .5px;
 
     text-transform: uppercase;
 
@@ -613,7 +598,8 @@ td {
 
     color: #3c4742;
 
-    font-size: 12.5px;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 tbody tr {
@@ -631,20 +617,22 @@ tbody tr:last-child td {
 td strong {
     color: var(--text);
 
-    font-weight: 650;
+    font-weight: 500;
 }
 
 .qty {
     color: var(--text);
 
-    font-weight: 700;
+    font-weight: 600;
 
     font-variant-numeric:
         tabular-nums;
 }
 
 
-/* STATUS */
+/* =========================================================
+   STATUS
+========================================================= */
 
 .status {
     display: inline-flex;
@@ -655,8 +643,8 @@ td strong {
 
     border-radius: 20px;
 
-    font-size: 9.5px;
-    font-weight: 750;
+    font-size: 10px;
+    font-weight: 500;
 }
 
 .status.good {
@@ -722,8 +710,9 @@ td strong {
 
     color: white;
 
-    font-size: 12.5px;
-    font-weight: 700;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
 
     cursor: pointer;
 
@@ -773,8 +762,9 @@ td strong {
 
     color: var(--primary-dark);
 
-    font-size: 11.5px;
-    font-weight: 700;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
 
     cursor: pointer;
 
@@ -825,8 +815,8 @@ label {
 
     color: #44514b;
 
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 input,
@@ -848,8 +838,9 @@ select {
 
     color: var(--text);
 
-    font: inherit;
-    font-size: 12.5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
 
     transition:
         border .15s ease,
@@ -924,39 +915,27 @@ select:focus {
         rgba(255,255,255,.045);
 }
 
-.side-summary .eyebrow {
-    color: #91b5a5;
-}
 
 .side-summary h2 {
     margin-bottom: 32px;
 
     font-size: 17px;
-    font-weight: 650;
+    font-weight: 600;
 }
 
 .big-number {
     margin-bottom: 10px;
 
     font-size: 36px;
-    font-weight: 760;
+    font-weight: 700;
 
-    letter-spacing: -1px;
+    letter-spacing: -.5px;
 }
 
-.side-summary > p:last-child {
-    max-width: 230px;
-
-    color: #a9beb5;
-
-    font-size: 11.5px;
-
-    line-height: 1.65;
-}
 
 
 /* =========================================================
-   AVAILABLE STOCK BOX
+   AVAILABLE STOCK
 ========================================================= */
 
 .available-box {
@@ -985,8 +964,8 @@ select:focus {
 .available-box span {
     color: #527060;
 
-    font-size: 10.5px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 500;
 
     text-transform: uppercase;
 
@@ -997,7 +976,7 @@ select:focus {
     color: var(--primary-dark);
 
     font-size: 18px;
-    font-weight: 750;
+    font-weight: 600;
 }
 
 .warning {
@@ -1009,7 +988,8 @@ select:focus {
 
     color: var(--danger);
 
-    font-size: 10.5px;
+    font-size: 11px;
+    font-weight: 400;
 }
 
 
@@ -1024,7 +1004,41 @@ select:focus {
 
     text-align: center;
 
+    font-size: 13px;
+    font-weight: 400;
+
     font-style: italic;
+}
+
+
+
+
+/* Stock value icon */
+.icon-box.gold {
+    color: #8a6a1e;
+    background: #fbf1dc;
+}
+
+/* Visible keyboard focus */
+.nav-link:focus-visible,
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible {
+    outline: 2px solid #79b89b;
+    outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .nav-link,
+    .primary-btn {
+        transition: none !important;
+    }
+
+    .card:hover,
+    .primary-btn:hover {
+        transform: none !important;
+    }
 }
 
 

@@ -12,8 +12,6 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
     rel="stylesheet"
 >
-
-<link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -66,11 +64,7 @@
         <header class="topbar">
 
             <div>
-                <p class="eyebrow">OVERVIEW</p>
                 <h1>Dashboard</h1>
-                <p class="subtitle">
-                    Monitor today's chicken inventory and stock movement.
-                </p>
             </div>
 
             <div class="date-box">
@@ -87,44 +81,48 @@
             <div class="card">
                 <div class="card-top">
                     <span>Yesterday's Stock</span>
-                    <div class="icon-box">↺</div>
+                    <div class="icon-box" aria-hidden="true">↺</div>
                 </div>
 
                 <h2 id="openingTotal">0 kg</h2>
-                <p>Carried forward</p>
             </div>
 
 
             <div class="card">
                 <div class="card-top">
                     <span>Stock In</span>
-                    <div class="icon-box green">↓</div>
+                    <div class="icon-box green" aria-hidden="true">↓</div>
                 </div>
 
                 <h2 id="stockInTotal">0 kg</h2>
-                <p>Received today</p>
             </div>
 
 
             <div class="card">
                 <div class="card-top">
                     <span>Distributed</span>
-                    <div class="icon-box orange">→</div>
+                    <div class="icon-box orange" aria-hidden="true">→</div>
                 </div>
 
                 <h2 id="distributedTotal">0 kg</h2>
-                <p>Released today</p>
             </div>
 
 
             <div class="card highlight">
                 <div class="card-top">
                     <span>Remaining Stock</span>
-                    <div class="icon-box white">✓</div>
+                    <div class="icon-box white" aria-hidden="true">✓</div>
                 </div>
 
                 <h2 id="remainingTotal">0 kg</h2>
-                <p>Currently available</p>
+            </div>
+
+            <div class="card value">
+                <div class="card-top">
+                    <span>Stock Value</span>
+                    <div class="icon-box gold" aria-hidden="true">₱</div>
+                </div>
+                <h2 id="stockValueTotal">₱0.00</h2>
             </div>
 
         </section>
@@ -136,8 +134,7 @@
             <div class="panel-header">
 
                 <div>
-                    <p class="eyebrow">LIVE INVENTORY</p>
-                    <h2>Stock Overview</h2>
+                    <h2>Inventory Overview</h2>
                 </div>
 
                 <button class="secondary-btn" id="closeDayBtn">
